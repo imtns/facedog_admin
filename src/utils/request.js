@@ -5,8 +5,9 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-    baseURL: 'http://39.97.187.201:8080/api/',//process.env.VUE_APP_BASE_API, // url = base url + request url
-    // withCredentials: true, // send cookies when cross-domain requests
+     baseURL: process.env.NODE_ENV === 'production' ? 'https://www.facedog.cn/api/' : 'http://test.facedog.cn/api/',//process.env.VUE_APP_BASE_API, // url = base url + request url
+    //  baseURL: process.env.NODE_ENV === 'production' ? 'https://www.facedog.cn/api/' : 'http://test.facedog.cn/api/',//process.env.VUE_APP_BASE_API, // url = base url + request url
+     // withCredentials: true, // send cookies when cross-domain requests
     timeout: 5000 // request timeout
 })
 

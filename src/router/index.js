@@ -39,139 +39,167 @@ import discoverRouter from './modules/discover'
  * all roles can be accessed
  */
 export const constantRoutes = [
-  {
-    path: '/redirect',
-    mode: 'history',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index')
-      }
-      ]
-},
-{
-  path: '/login',
-  component:() =>import('@/views/login/index'),
-  hidden:true
-},
-{
-  path: '/auth-redirect',
-  component:() =>import('@/views/login/auth-redirect'),
-  hidden:true
-},
-{
-  path: '/404',
-  component:() =>import('@/views/error-page/404'),
-  hidden:true
-},
-{
-  path: '/401',
-  component: () => import('@/views/error-page/401'),
-  hidden: true
-},
-{
-  path: '/',
-  component:Layout,
-  redirect:'/dashboard',
-  children:
-  [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
-      name: '首页',
-      meta:{title: '首页', icon:'dashboard', affix:true}
-    }
-  ]
-},
-{
-  path: '/users',
-  component: Layout,
-  children: [
     {
-      path: 'list',
-      component: () => import('@/views/users/complex-table'),
-      name: '用户',
-      meta:{title: '用户', icon: 'peoples', affix: true}
+        path: '/redirect',
+        mode: 'history',
+        component: Layout,
+        hidden: true,
+        children: [
+            {
+                path: '/redirect/:path*',
+                component: () => import('@/views/redirect/index')
+            }
+        ]
     },
     {
-      path: ':id(.*)',
-        component:() =>import('@/views/users/profile'),
-      name:'userprofile',
-      meta:{
-      title: '用户详情',
-        noCache:true,
-        activeMenu:'/user/list'
-      },
-      hidden: true
-    }
-  ]
-},
-discoverRouter,
-{
-  path: '/face',
-  component:Layout,
-  children:[
-    {
-      path: 'index',
-      component: () => import('@/views/face/index'),
-      name: 'face',
-      meta:{title: '颜值管理',
-      icon:'face',
-      affix:true}
-    }
-  ]
-},
-{
-  path: '/audits',
-    component:Layout,
-  children:[
-  {
-    path: 'index',
-    component: () => import('@/views/audit/index'),
-    name: 'audit',
-    meta:{title: '审核管理', icon:'audit', affix:true}
-  }
-]
-},
-{
-  path: '/guider',
-    component: Layout,
-  redirect: '/guider/index',
-  name: '推荐管理',
-  meta: {
-  title: '推荐管理',
-    icon: 'guider'
-  },
-  children: [
-    {
-      path: 'index',
-      component: () => import('@/views/guider/index'),
-      name: 'guider',
-    meta:{title: '推荐管理', icon:'guider',  affix:true}
+        path: '/login',
+        component: () => import('@/views/login/index'),
+        hidden: true
     },
-  {
-    path: 'rewards',
-      component: () => import('@/views/guider/rewards'),
-    name: '提现申请',
-    meta: { title: '提现申请',  icon:'rewards',  affix:true},
-  },
-]
-},
-{
-  path: '/profile',
-  component:Layout,
-  redirect:'/profile/index',
-  hidden:true,
-  children:[
     {
-      path: 'index',
-      component: () => import('@/views/profile/index'),
-      name: 'Profile',
-      meta:{title: 'Profile', icon:'user', noCache:true}
+        path: '/auth-redirect',
+        component: () => import('@/views/login/auth-redirect'),
+        hidden: true
+    },
+    {
+        path: '/404',
+        component: () => import('@/views/error-page/404'),
+        hidden: true
+    },
+    {
+        path: '/401',
+        component: () => import('@/views/error-page/401'),
+        hidden: true
+    },
+    {
+        path: '/',
+        component: Layout,
+        redirect: '/dashboard',
+        children:
+            [{
+                path: 'dashboard',
+                component: () => import('@/views/dashboard/index'),
+                name: '首页',
+                meta: { title: '首页', icon: 'dashboard', affix: true }
+            }
+            ]
+    },
+    {
+        component: Layout,
+        redirect: '/userReports',
+        path: '/userReports',
+        children:
+            [{
+                path: 'index',
+                component: () => import('@/views/users/userReport'),
+                name: '用户举报管理',
+                meta: { title: '用户举报管理', icon: 'report' }
+            }
+            ]
+    },
+    {
+        component: Layout,
+        redirect: '/videoAudit',
+        path: '/videoAudit',
+        children:
+            [{
+                path: 'videoaudit',
+                component: () => import('@/views/audit/video-audit'),
+                name: '真人认证',
+                meta: { title: '真人认证', icon: 'report' }
+            }
+            ]
+    },
+    {
+        path: '/users',
+        component: Layout,
+        children: [
+            {
+                path: 'list',
+                component: () => import('@/views/users/complex-table'),
+                name: '用户',
+                meta: { title: '用户', icon: 'peoples', affix: true }
+            },
+            {
+                path: ':id(.*)',
+                component: () => import('@/views/users/profile'),
+                name: 'userprofile',
+                meta: {
+                    title: '用户详情',
+                    noCache: true,
+                    activeMenu: '/user/list'
+                },
+                hidden: true
+            }
+        ]
+    },
+    discoverRouter,
+    {
+        path: '/face',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/face/index'),
+                name: 'face',
+                meta: {
+                    title: '颜值管理',
+                    icon: 'face',
+                    affix: true
+                }
+            }
+        ]
+    },
+    {
+        path: '/audits',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/audit/index'),
+                name: 'audit',
+                meta: { title: '审核管理', icon: 'audit', affix: true }
+            }
+        ]
+    },
+    {
+        path: '/guider',
+        component: Layout,
+        redirect: '/guider/index',
+        name: '推荐管理',
+        meta: {
+            title: '推荐管理',
+            icon: 'guider'
+        },
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/guider/index'),
+                name: 'guider',
+                meta: { title: '推荐管理', icon: 'guider', affix: true }
+            },
+            {
+                path: 'rewards',
+                component: () => import('@/views/guider/rewards'),
+                name: '提现申请',
+                meta: { title: '提现申请', icon: 'rewards', affix: true },
+            },
+        ]
+    },
+    {
+        path: '/profile',
+        component: Layout,
+        redirect: '/profile/index',
+        hidden: true,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/profile/index'),
+                name: 'Profile',
+                meta: { title: 'Profile', icon: 'user', noCache: true }
+            }
+        ]
     }
-]
-}
 ]
 
 /**
@@ -180,28 +208,28 @@ discoverRouter,
  */
 export const asyncRoutes = [
 
-/** when your routing map is too long, you can split it into small modules **/
+    /** when your routing map is too long, you can split it into small modules **/
 
-// 404 page must be placed at the end !!!
-{
-  path: '*',
-  redirect:'/404',
-  hidden:true
-}
+    // 404 page must be placed at the end !!!
+    {
+        path: '*',
+        redirect: '/404',
+        hidden: true
+    }
 ]
 
 const createRouter = () => new Router({
-  mode: 'history', // require service support
-  scrollBehavior: () => ({y: 0}),
-  routes: constantRoutes
+    mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
 })
 
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher // reset router
 }
 
 export default router
