@@ -129,7 +129,7 @@ export default {
   methods: {
     levelChange(level, id) {
       console.log(level, id);
-      set_level(level, id).then((response) => {
+      set_level(level, id).then(() => {
         this.$message({
           message: "操作成功",
           type: "success",
@@ -152,7 +152,7 @@ export default {
     },
     deleteUser() {
       this.listLoading = true;
-      delete_user(this.delete_id).then((response) => {
+      delete_user(this.delete_id).then(() => {
         setTimeout(() => {
           this.$message({
             message: "操作成功",

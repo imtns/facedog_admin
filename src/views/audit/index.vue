@@ -89,7 +89,7 @@
 <script>
 import { getAudit, handleVideo } from "@/api/faceAudit";
 import waves from "@/directive/waves"; // waves directive
-import Mallki from "@/components/TextHoverEffect/Mallki";
+// import Mallki from "@/components/TextHoverEffect/Mallki";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import elDragDialog from "@/directive/el-drag-dialog";
 import { videoPlayer } from "vue-video-player";
@@ -100,7 +100,11 @@ import "video.js/dist/video-js.css";
 
 export default {
   name: "ComplexTable",
-  components: { Pagination, Mallki, videoPlayer },
+  components: {
+    Pagination,
+    //   Mallki,
+    videoPlayer,
+  },
   directives: { waves, elDragDialog },
   filters: {
     genderFilter(type) {
