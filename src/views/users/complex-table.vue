@@ -46,6 +46,11 @@
                     <span>{{ scope.row.progress|statusFilter }}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="图片" width="80px" align="center">
+                <template slot-scope="scope">
+                    <el-button type="text" @click="showImage(scope.row.avatar)">查看头像</el-button>
+                </template>
+            </el-table-column>
             <el-table-column label="设置评级" width="140px" align="center">
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.level" placeholder="设置评级" @change="levelChange(scope.row.level,scope.row._id)">
@@ -70,6 +75,9 @@
                 <el-button type="danger" @click="dialogTooltip=false" style="margin-right:50px">取消</el-button>
                 <el-button type="primary" @click="deleteUser()">确定</el-button>
             </div>
+        </el-dialog>
+        <el-dialog v-el-drag-dialog :visible.sync="dialogTableVisible" :title="dialogTitle" @dragDialog="handleDrag">
+            <img v-if="showWindows.type==='image'" :src="showWindows.url" alt="" style="width: 400px;height:400px">
         </el-dialog>
     </div>
 </template>
@@ -115,7 +123,13 @@ export default {
       total: 0,
       dialogTooltip: false,
       delete_id: "",
+      dialogTableVisible: false,
+      showWindows: {
+        type: "",
+        url: "",
+      },
       listLoading: true,
+      dialogTitle:"",
       listQuery: {
         page: 1,
         limit: 20,
@@ -127,6 +141,11 @@ export default {
     this.getList();
   },
   methods: {
+    showImage(url) {
+      this.dialogTitle = "用户图片";
+      this.showWindows = { type: "image", url: url };
+      this.dialogTableVisible = true;
+    },
     levelChange(level, id) {
       console.log(level, id);
       set_level(level, id).then(() => {
