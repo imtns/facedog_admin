@@ -56,10 +56,10 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
                 <template slot-scope="{row}">
-                    <el-button type="text" @click="showTooltip(row._id, 'success',row.level)">
+                    <el-button type="text" @click="showTooltip(row.user_id, 'success')">
                         通过
                     </el-button>
-                    <el-button type="text" @click="showTooltip(row._id, 'refuse', '')">
+                    <el-button type="text" @click="showTooltip(row.user_id, 'refuse', '')">
                         拒绝
                     </el-button>
                 </template>
@@ -117,7 +117,7 @@ export default {
     genderStatus(type) {
       const statusMap = {
         success: "通过",
-        refuse: "拒绝",
+        failed: "拒绝",
       };
       return statusMap[type];
     },
@@ -202,10 +202,19 @@ export default {
     handleDrag() {
       console.log("handleDrag");
     },
-    operation(user_id, status, level) {
+    operation(id, status, level) {
       this.listLoading = true;
+      //   people_audit(user_id, status, "video").then(() => {
+      //     this.$message({
+      //       message: "操作成功",
+      //       type: "success",
+      //     });
+      //     setTimeout(() => {
+      //       this.getList();
+      //     }, 500);
+      //   });
 
-      handleVideo(user_id, status, level).then(() => {
+      handleVideo(id, status, level).then(() => {
         setTimeout(() => {
           this.$message({
             message: "操作成功",

@@ -54,6 +54,14 @@
                     </el-select>
                 </template>
             </el-table-column>
+            <el-table-column label="真人认证" width="110px" align="center">
+                <template slot-scope="scope">
+                    <el-select v-model="scope.row.video_audit" value-key="key" placeholder="设置评级" @change="auditChange(scope.row.video_audit,scope.row._id)">
+                        <el-option v-for="item in audit" :key="item.name" :label="item.name" :value="item.key">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
                 <template slot-scope="{row}">
                     <el-button size="mini" type="danger" @click="showDelete(row._id)">
@@ -75,6 +83,7 @@
 </template>
 
 <script>
+import { people_audit } from "@/api/faceAudit";
 import { fetchList, delete_user, set_level } from "@/api/article";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -99,6 +108,14 @@ export default {
       };
       return statusMap[status];
     },
+    audit_status(status) {
+      const statusMap = {
+        auditing: "审核中",
+        finish: "已认证",
+        unfinish: "未认证",
+      };
+      return statusMap[status];
+    },
     genderFilter(type) {
       const statusMap = {
         male: "男",
@@ -112,6 +129,20 @@ export default {
       tableKey: 0,
       list: null,
       level: ["N", "R", "SR", "SSR"],
+      audit: [
+        {
+          key: "auditing",
+          name: "认证中",
+        },
+        {
+          key: "finish",
+          name: "已认证",
+        },
+        {
+          key: "unfinish",
+          name: "未认证",
+        },
+      ],
       total: 0,
       dialogTooltip: false,
       delete_id: "",
@@ -130,6 +161,14 @@ export default {
     levelChange(level, id) {
       console.log(level, id);
       set_level(level, id).then(() => {
+        this.$message({
+          message: "操作成功",
+          type: "success",
+        });
+      });
+    },
+    auditChange(status, id) {
+      people_audit(id, status, "official").then(() => {
         this.$message({
           message: "操作成功",
           type: "success",

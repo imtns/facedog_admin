@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { getAudit, handleVideo } from "@/api/faceAudit";
+import { getAudit, handleAudit } from "@/api/faceAudit";
 import waves from "@/directive/waves"; // waves directive
 // import Mallki from "@/components/TextHoverEffect/Mallki";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
@@ -205,7 +205,7 @@ export default {
     operation(user_id, status, level) {
       this.listLoading = true;
 
-      handleVideo(user_id, status, level).then((response) => {
+      handleAudit(user_id, status, level).then((response) => {
         setTimeout(() => {
           this.$message({
             message: "操作成功",

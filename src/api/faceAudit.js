@@ -40,7 +40,7 @@ export function getVideoAudit(query) {
         params: query
     })
 }
-export function handleVideo(id, status, level) {
+export function handleAudit(id, status, level) {
     return request({
         url: '/management/audit',
         method: 'post',
@@ -48,7 +48,22 @@ export function handleVideo(id, status, level) {
         data: { "user_id": id, "operation": status, "level": level }
     })
 }
-
+export function handleVideo(id, status, level) {
+    return request({
+        url: '/management/video_audit',
+        method: 'post',
+        // params: {"user_id": id},
+        data: { "user_id": id, "operation": status, "level": level }
+    })
+}
+export function people_audit(id, status, type) {
+    return request({
+        url: '/management/audit_status',
+        method: 'post',
+        // params: {"user_id": id},
+        data: { "user_id": id, "status": status, type }
+    })
+}
 
 
 export function user_profile(id) {
