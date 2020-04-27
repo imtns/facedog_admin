@@ -13,6 +13,23 @@
                        @click="handleFilter">
                 Search
             </el-button>
+            <el-select value-key="key"
+                       size="mini"
+                       v-model="sortLevel"
+                       style="width:100px;"
+                       placeholder="评级排序"
+                       @change="sortUser">
+                <el-option v-for="item in levelSort"
+                           :key="item.key"
+                           :label="item.name"
+                           :value="item.key">
+                </el-option>
+            </el-select>
+            <el-switch v-model="loginSortValue"
+                       @change="loginSort"
+                       active-text=""
+                       inactive-text="登录排序">
+            </el-switch>
         </div>
 
         <el-table :key="tableKey"
@@ -186,6 +203,7 @@ export default {
       };
       return statusMap[status];
     },
+
     audit_status(status) {
       const statusMap = {
         auditing: "审核中",
@@ -207,7 +225,26 @@ export default {
       tableKey: 0,
       list: null,
       level: ["N", "R", "SR", "SSR"],
+      levelSort: [
+        {
+          key: "N",
+          name: "N",
+        },
+        {
+          key: "R",
+          name: "R",
+        },
+        {
+          key: "SR",
+          name: "SR",
+        },
+        {
+          key: "SSR",
+          name: "SSR",
+        },
+      ],
       dialogTableVisible: false,
+      level: "",
       audit: [
         {
           key: "auditing",
@@ -227,7 +264,9 @@ export default {
       delete_id: "",
       listLoading: true,
       showWindows: {},
+      sortLevel: "",
       dialogTitle: "",
+      loginSortValue: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -260,6 +299,14 @@ export default {
           type: "success",
         });
       });
+    },
+    sortUser(e) {
+      this.listQuery.level = e;
+      this.getList();
+    },
+    loginSort(e) {
+      this.listQuery.login_sort = e ? "on" : "off";
+      this.getList();
     },
     getList() {
       this.listLoading = true;
