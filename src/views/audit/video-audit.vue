@@ -34,14 +34,14 @@
                     <el-button type="text" @click="showImage(scope.row.avatar)">查看头像</el-button>
                 </template>
             </el-table-column>
-            <el-table-column label="设置评级" width="140px" align="center">
+            <!-- <el-table-column label="设置评级" width="140px" align="center">
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.level" placeholder="设置评级">
                         <el-option v-for="item in level" :key="item" :label="item" :value="item">
                         </el-option>
                     </el-select>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="视频" width="80px" align="center">
                 <template slot-scope="scope">
                     <el-button v-if="scope.row.video_url" type="text" @click="showVideo(scope.row.video_url)">查看视频</el-button>
@@ -56,10 +56,10 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
                 <template slot-scope="{row}">
-                    <el-button type="text" @click="showTooltip(row._id, 'success',row.level)">
+                    <el-button type="text" @click="showTooltip(row.user_id, 'success')">
                         通过
                     </el-button>
-                    <el-button type="text" @click="showTooltip(row._id, 'refuse', '')">
+                    <el-button type="text" @click="showTooltip(row.user_id, 'refuse', '')">
                         拒绝
                     </el-button>
                 </template>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { getAudit, handleAudit } from "@/api/faceAudit";
+import { getVideoAudit, handleVideo } from "@/api/faceAudit";
 import waves from "@/directive/waves"; // waves directive
 // import Mallki from "@/components/TextHoverEffect/Mallki";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
@@ -117,7 +117,7 @@ export default {
     genderStatus(type) {
       const statusMap = {
         success: "通过",
-        refuse: "拒绝",
+        failed: "拒绝",
       };
       return statusMap[type];
     },
@@ -146,7 +146,7 @@ export default {
       images: [],
       listQuery: {
         page: 1,
-        limit: 20,
+        per_page: 20,
         search: "",
       },
     };
@@ -157,8 +157,8 @@ export default {
   methods: {
     getList() {
       this.listLoading = true;
-      getAudit(this.listQuery).then((response) => {
-        this.list = response.data.users;
+      getVideoAudit(this.listQuery).then((response) => {
+        this.list = response.data.videos;
         this.total = response.data.count;
         setTimeout(() => {
           this.listLoading = false;
@@ -202,10 +202,19 @@ export default {
     handleDrag() {
       console.log("handleDrag");
     },
-    operation(user_id, status, level) {
+    operation(id, status, level) {
       this.listLoading = true;
+      //   people_audit(user_id, status, "video").then(() => {
+      //     this.$message({
+      //       message: "操作成功",
+      //       type: "success",
+      //     });
+      //     setTimeout(() => {
+      //       this.getList();
+      //     }, 500);
+      //   });
 
-      handleAudit(user_id, status, level).then((response) => {
+      handleVideo(id, status, level).then(() => {
         setTimeout(() => {
           this.$message({
             message: "操作成功",

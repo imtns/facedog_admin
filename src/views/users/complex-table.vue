@@ -46,15 +46,18 @@
                     <span>{{ scope.row.progress|statusFilter }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="图片" width="80px" align="center">
-                <template slot-scope="scope">
-                    <el-button type="text" @click="showImage(scope.row.avatar)">查看头像</el-button>
-                </template>
-            </el-table-column>
             <el-table-column label="设置评级" width="140px" align="center">
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.level" placeholder="设置评级" @change="levelChange(scope.row.level,scope.row._id)">
                         <el-option v-for="item in level" :key="item" :label="item" :value="item">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-table-column>
+            <el-table-column label="真人认证" width="110px" align="center">
+                <template slot-scope="scope">
+                    <el-select v-model="scope.row.video_audit" value-key="key" placeholder="设置评级" @change="auditChange(scope.row.video_audit,scope.row._id)">
+                        <el-option v-for="item in audit" :key="item.name" :label="item.name" :value="item.key">
                         </el-option>
                     </el-select>
                 </template>
@@ -76,13 +79,11 @@
                 <el-button type="primary" @click="deleteUser()">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog v-el-drag-dialog :visible.sync="dialogTableVisible" :title="dialogTitle" @dragDialog="handleDrag">
-            <img v-if="showWindows.type==='image'" :src="showWindows.url" alt="" style="width: 400px;height:400px">
-        </el-dialog>
     </div>
 </template>
 
 <script>
+import { people_audit } from "@/api/faceAudit";
 import { fetchList, delete_user, set_level } from "@/api/article";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
@@ -107,6 +108,14 @@ export default {
       };
       return statusMap[status];
     },
+    audit_status(status) {
+      const statusMap = {
+        auditing: "审核中",
+        finish: "已认证",
+        unfinish: "未认证",
+      };
+      return statusMap[status];
+    },
     genderFilter(type) {
       const statusMap = {
         male: "男",
@@ -120,14 +129,23 @@ export default {
       tableKey: 0,
       list: null,
       level: ["N", "R", "SR", "SSR"],
+      audit: [
+        {
+          key: "auditing",
+          name: "认证中",
+        },
+        {
+          key: "finish",
+          name: "已认证",
+        },
+        {
+          key: "unfinish",
+          name: "未认证",
+        },
+      ],
       total: 0,
       dialogTooltip: false,
       delete_id: "",
-      dialogTableVisible: false,
-      showWindows: {
-        type: "",
-        url: "",
-      },
       listLoading: true,
       dialogTitle:"",
       listQuery: {
@@ -141,14 +159,17 @@ export default {
     this.getList();
   },
   methods: {
-    showImage(url) {
-      this.dialogTitle = "用户图片";
-      this.showWindows = { type: "image", url: url };
-      this.dialogTableVisible = true;
-    },
     levelChange(level, id) {
       console.log(level, id);
       set_level(level, id).then(() => {
+        this.$message({
+          message: "操作成功",
+          type: "success",
+        });
+      });
+    },
+    auditChange(status, id) {
+      people_audit(id, status, "official").then(() => {
         this.$message({
           message: "操作成功",
           type: "success",

@@ -86,17 +86,17 @@ export function get_reports(query) {
         params: query
     })
 }
-export function handle_reports(id, result) {
-    return request({
-        url: '/management/reports',
-        method: 'post',
-        data: { "id": id, "result": result }
-    })
-}
 export function set_level(level, user_id) {
     return request({
         url: '/management/rating',
         method: 'post',
         data: { user_id, level }
+    })
+}
+export function handle_reports(id, result) {
+    return request({
+        url: '/management/reports',
+        method: 'post',
+        data: { "id": id, "result": result }
     })
 }

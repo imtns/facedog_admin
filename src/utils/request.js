@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
@@ -5,7 +6,8 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ? 'http://manager.facedog.cn/api/' : 'https://test.facedog.cn/api/',//process.env.VUE_APP_BASE_API, // url = base url + request url
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://www.facedog.cn/api/' : 'http://test.facedog.cn/api/',//process.env.VUE_APP_BASE_API, // url = base url + request url
+    //  baseURL: process.env.NODE_ENV === 'production' ? 'https://www.facedog.cn/api/' : 'http://test.facedog.cn/api/',//process.env.VUE_APP_BASE_API, // url = base url + request url
     // withCredentials: true, // send cookies when cross-domain requests
     timeout: 5000 // request timeout
 })
